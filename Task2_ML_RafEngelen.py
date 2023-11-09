@@ -15,20 +15,17 @@
 # %% [markdown]
 # ## The Dataset
 # 
-# Read data (source: https://archive.ics.uci.edu/dataset/101/tic+tac+toe+endgame)
+# I have chosen the following dataset for this task: https://archive.ics.uci.edu/dataset/101/tic+tac+toe+endgame.
 # 
-# Because the data has no headers included, I will create these myself
-# 
-# supervised want labels aanwezig
-# 
+# The data contains no headers, this is why i create them myself. 
+# The data can be used for supervised machine learning. The data is labeled, the column "x has won" contains the labels in which the data is catecorized.
 
 # %%
 import pandas as pd
 feature_cols=[
     "top-left", "top-middle", "top-right", 
     "middle-left", "middle-middel", "middle-right", 
-    "bottom-left", "bottom-middle", "bottom-right", 
-    
+    "bottom-left", "bottom-middle", "bottom-right" 
     ]
 tictactoe_df = pd.read_csv("data/tic-tac-toe.data",
                            sep=',',
@@ -36,32 +33,23 @@ tictactoe_df = pd.read_csv("data/tic-tac-toe.data",
                            names=feature_cols+["x has won"]
                            )
                            
-tictactoe_df
+print(tictactoe_df)
 
 # %% [markdown]
 # ### Exploratory Data Analysis
 # 
+# First we research the data out of the dataset. By using the describe function we get some interesting information about the data. We see the amount of values in each column, how many unique values there are in each column, which value is the most frequent value and how many times that value is in that column.
 # 
-# kijk data na, minimum requerements berijkt?
+# We can also find out how many null values there are in each column by using the isna function. We see that the data does not have any null values.
 
 # %%
-print(tictactoe_df.describe())
-print(tictactoe_df.isna().sum())
+print(tictactoe_df.describe(),"\n\n",tictactoe_df.isna().sum(), sep="")
 
-# %% [markdown]
-# unbalanced features:
-# 
-# We see that x (first player) is in all locations on the board more used than b (other player). This is normal because when x wins, he has had 1 turn more than b. And when b wins, they had the same amount of wins. So it is normal that x occurs more.
-
-# %%
-for column in tictactoe_df.columns:
-    value_counts = tictactoe_df[column].value_counts()
-    print(f"Counts for {column}:\n{value_counts}\n")
 
 # %% [markdown]
 # ### Splitting the data
 # 
-# split data in training set and testing set
+# We need 2 sets of data, one to train the model and the other to test the model. 
 
 # %%
 from sklearn.model_selection import train_test_split
@@ -101,17 +89,12 @@ print(X_train_cat_oh)
 # %% [markdown]
 # ## Baseline
 
+# %% [markdown]
+# First we need to import some modules.
+
 # %%
-import numpy as np
-
-from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier
-
-
-
 from sklearn.metrics import confusion_matrix,accuracy_score
-from sklearn import metrics
-
 from io import StringIO
 from IPython.display import Image  
 from sklearn.tree import export_graphviz
@@ -125,7 +108,7 @@ clf_baseline = DecisionTreeClassifier(criterion = "entropy")
 clf_baseline = clf_baseline.fit(X_train_cat_oh, y_train)
 
 # %% [markdown]
-# teken decision tree
+# Here we can draw the decision tree that our model has created.
 
 # %%
 dot_data = StringIO()
@@ -141,14 +124,12 @@ graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
 Image(graph.create_png(), width=2000)
 
 # %% [markdown]
-# predictions
+# Now I can use the model to predict the resultss for the test dataset.
 
 # %%
 y_pred_baseline = clf_baseline.predict(X_test_cat_oh)
 
 # %% [markdown]
-# confusion matrix
-# 
 # Because I want to collect information about the model. I want to show the confusion matrix and calculate the accuracy. We want this for the models we will after the baseline model as well, so we will create a function that prints the information we want to see.
 # 
 # First we create and print the confusion matrix. Because the diagonal from the upper left has all the correct predictions, we can easily sum these up to get the amount of correct predictions. We can also calculate the total amount of predictions we have made. At last we can also calculate the accuracy.
@@ -202,6 +183,11 @@ print_confusion(y_test, y_pred_mlp)
 import streamlit as st
 st.header('Raf Engelen - r0901812 - 3APP01', divider='gray')
 st.title("Task 2 ML: Benchmarking two ML algorithms")
+
+option = st.sidebar.selectbox(
+    'Choose machine learning model',
+    ('Linear Regression', 'Random Forest', 'Gradient Boosting')
+)
 
 # %% [markdown]
 # bronnen:
