@@ -112,16 +112,16 @@ clf_baseline = clf_baseline.fit(X_train_cat_oh, y_train)
 
 # %%
 dot_data = StringIO()
-#export_graphviz(clf_baseline, 
-#                out_file = dot_data, 
-#                filled = True, 
-#                rounded = True,
-#                special_characters = True, 
-#                feature_names = X_train_cat_oh.columns, 
-#                class_names=['positief', 'negatief']
-#                )
-#graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
-#Image(graph.create_png(), width=2000)
+export_graphviz(clf_baseline, 
+                out_file = dot_data, 
+                filled = True, 
+                rounded = True,
+                special_characters = True, 
+                feature_names = X_train_cat_oh.columns, 
+                class_names=['positief', 'negatief']
+                )
+graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
+Image(graph.create_png(), width=2000)
 
 # %% [markdown]
 # Now I can use the model to predict the resultss for the test dataset.
@@ -186,7 +186,7 @@ st.title("Task 2 ML: Benchmarking two ML algorithms")
 
 option = st.sidebar.selectbox(
     'Choose machine learning model',
-    ('Linear Regression', 'Random Forest', 'Gradient Boosting')
+    ('Decision Tree', 'Gaussian Naive Bayes', 'Multi-layer Perceptron')
 )
 
 # %% [markdown]
