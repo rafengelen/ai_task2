@@ -117,17 +117,17 @@ clf_baseline = clf_baseline.fit(X_train_cat_oh, y_train)
 # Here we can draw the decision tree that our model has created.
 
 # %%
-# dot_data = StringIO()
-# export_graphviz(clf_baseline, 
-  #              out_file = dot_data, 
-   #              filled = True, 
-     #           rounded = True,
-      #          special_characters = True, 
-       #         feature_names = X_train_cat_oh.columns, 
-        #        class_names=['positief', 'negatief']
-         #       )
-#graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
-#tree_image = Image(graph.create_png(), width=2000)
+dot_data = StringIO()
+export_graphviz(clf_baseline, 
+                out_file = dot_data, 
+                filled = True, 
+                rounded = True,
+                special_characters = True, 
+                feature_names = X_train_cat_oh.columns, 
+                class_names=['positief', 'negatief']
+                )
+graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
+tree_image = Image(graph.create_png(), width=2000)
 # tree_image
 
 # %% [markdown]
@@ -142,17 +142,21 @@ y_pred_baseline = clf_baseline.predict(X_test_cat_oh)
 # First we create and print the confusion matrix. Because the diagonal from the upper left has all the correct predictions, we can easily sum these up to get the amount of correct predictions. We can also calculate the total amount of predictions we have made. At last we can also calculate the accuracy.
 
 # %%
+import streamlit as st
 def print_confusion(actual, prediction):
 
     confusion = confusion_matrix(actual, prediction, labels = ["positive", "negative"])
     print(f"Confusion matrix: \n{confusion}")
+    st.write(f"Confusion matrix: \n{confusion}")
 
     # Good predictions: 
     correct_predictions = confusion.diagonal().sum()
     print(f"Amount of correct predictions: {correct_predictions}")
+    st.write(f"Confusion matrix: \n{confusion}")
 
     # Accuracy:
     print(f"Accuracy: {accuracy_score(actual, prediction)}")
+    st.write(f"Confusion matrix: \n{confusion}")
     # Ook mogelijk voor accuracy: print(f"Accuracy: {metrics.accuracy_score(y_test, y_pred)}")
 
 # %% [markdown]
@@ -187,11 +191,14 @@ y_pred_mlp = clf_mlp.predict(X_test_cat_oh)
 print_confusion(y_test, y_pred_mlp)
 
 # %% [markdown]
+# ## Compare models
+
+# %% [markdown]
 # ## Streamlit
 # 
 
 # %%
-import streamlit as st
+
 st.header('Raf Engelen - r0901812 - 3APP01', divider='gray')
 st.title("Task 2 ML: Benchmarking two ML algorithms")
 
@@ -201,13 +208,13 @@ option = st.sidebar.selectbox(
 )
 if option == 'Decision Tree':
     st.subheader('Decision Tree Model Information')
-    st.write(print_confusion(y_test, y_pred_baseline, use_column_width=True))
+    print_confusion(y_test, y_pred_baseline)
 elif option == 'Gaussian Naive Bayes':
     st.subheader('Gaussian Naive Bayes Model Information')
-    st.write(print_confusion(y_test, y_pred_gnb))
+    print_confusion(y_test, y_pred_gnb)
 elif option == 'Multi-layer Perceptron':
     st.subheader('Multi-layer Perceptron Model Information')
-    st.write(print_confusion(y_test, y_pred_mlp))
+    print_confusion(y_test, y-y_pred_mlp)
 
 # %% [markdown]
 # ## Bronnenlijst:
