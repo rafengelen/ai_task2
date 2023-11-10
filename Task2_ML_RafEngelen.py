@@ -2,7 +2,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import category_encoders as ce
-
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import confusion_matrix,accuracy_score
 from io import StringIO
@@ -12,28 +11,25 @@ import pydotplus
 import streamlit as st
 from sklearn.naive_bayes import GaussianNB, CategoricalNB
 from sklearn.neural_network import MLPClassifier
+
 def print_confusion(actual, prediction):
 
     confusion = confusion_matrix(actual, prediction, labels = ["positive", "negative"])
-    print(f"Confusion matrix: \n{confusion}")
+    
     st.write(f"Confusion matrix: \n{confusion}")
 
     # Good predictions: 
     correct_predictions = confusion.diagonal().sum()
-    print(f"Amount of correct predictions: {correct_predictions}")
-    st.write(f"Amount of correct predictions: \n{correct_predictions}")
+    
+    st.write(f"Amount of correct predictions: {correct_predictions}")
 
     # Accuracy:
-    print(f"Accuracy: {accuracy_score(actual, prediction)}")
-    st.write(f"Accuracy: \n{accuracy_score(actual, prediction)}")
+    
+    st.write(f"Accuracy: {accuracy_score(actual, prediction)}")
     # Ook mogelijk voor accuracy: print(f"Accuracy: {metrics.accuracy_score(y_test, y_pred)}")
 
-
-
-
-
 @st.cache(allow_output_mutation=True)
-def train_models():
+def main():
     feature_cols=[
     "top-left", "top-middle", "top-right", 
     "middle-left", "middle-middel", "middle-right", 
@@ -44,41 +40,37 @@ def train_models():
                            header=None, 
                            names=feature_cols+["x has won"]
                            )
-                           
-    print(tictactoe_df)
+    
     X = tictactoe_df[feature_cols] # Features
     y = tictactoe_df[['x has won']] # target variable
-
+  
+    # Split dataset into training set and test set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) # 70% training and 30% test
+    
     ce_oh = ce.OneHotEncoder(cols = feature_cols)
     X_train_cat_oh = ce_oh.fit_transform(X_train)
     X_test_cat_oh = ce_oh.fit_transform(X_test)
-    clf_baseline = DecisionTreeClassifier(criterion = "entropy")
-    clf_baseline = clf_baseline.fit(X_train_cat_oh, y_train)
+
+    clf_baseline = DecisionTreeClassifier(criterion = "entropy").fit(X_train_cat_oh, y_train)
     y_pred_baseline = clf_baseline.predict(X_test_cat_oh)
+
     clf_gnb= GaussianNB().fit(X_train_cat_oh, y_train)
     y_pred_gnb = clf_gnb.predict(X_test_cat_oh)
-
-
 
     clf_mlp = MLPClassifier().fit(X_train_cat_oh, y_train)
     y_pred_mlp = clf_mlp.predict(X_test_cat_oh)
 
     return y_test, y_pred_baseline, y_pred_gnb, y_pred_mlp
 
-# Initialize session_state
+
 if 'models_trained' not in st.session_state:
     st.session_state.models_trained = False
 
 # Train the models only if they haven't been trained yet
 if not st.session_state.models_trained:
-    y_test, y_pred_baseline, y_pred_gnb, y_pred_mlp = train_models()
-
-    df_baseline = pd.concat([y_test, pd.DataFrame({'Prediction': y_pred_baseline}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True)
-    df_gnb = pd.concat([y_test, pd.DataFrame({'Prediction': y_pred_gnb}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True)
-    df_mlp = pd.concat([y_test, pd.DataFrame({'Prediction': y_pred_mlp}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True)
-    
+    y_test, y_pred_baseline, y_pred_gnb, y_pred_mlp = main()
     st.session_state.models_trained = True  # Set the flag to True after training the models
+
 
 st.header('Raf Engelen - r0901812 - 3APP01', divider='gray')
 st.title("Task 2 ML: Benchmarking two ML algorithms")
@@ -88,14 +80,11 @@ option = st.sidebar.selectbox(
 )
 st.subheader('Information about the trained model')
 if option == 'Decision Tree':
-    print_confusion(y_test, pd.DataFrame(y_pred_baseline))
-    st.write(df_baseline)
+    print_confusion(y_test, y_pred_baseline)
 elif option == 'Gaussian Naive Bayes':
-    print_confusion(y_test, pd.DataFrame(y_pred_gnb))
-    st.write(df_gnb)
+    print_confusion(y_test, y_pred_gnb)
 elif option == 'Multi-layer Perceptron':
     print_confusion(y_test, y_pred_mlp)
-    st.write(df_mlp)
 
 # %% [markdown]
 # ## Bronnenlijst:
