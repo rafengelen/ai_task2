@@ -1,33 +1,41 @@
 
 import pandas as pd
+
 from sklearn.model_selection import train_test_split
+
 import category_encoders as ce
+
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import confusion_matrix,accuracy_score
 from io import StringIO
 from IPython.display import Image  
 from sklearn.tree import export_graphviz
 import pydotplus
-import streamlit as st
-from sklearn.naive_bayes import GaussianNB, CategoricalNB
-from sklearn.neural_network import MLPClassifier
 
+import streamlit as st
 def print_confusion(actual, prediction):
 
     confusion = confusion_matrix(actual, prediction, labels = ["positive", "negative"])
-    
+    print(f"Confusion matrix: \n{confusion}")
     st.write(f"Confusion matrix: \n{confusion}")
 
     # Good predictions: 
     correct_predictions = confusion.diagonal().sum()
-    
+    print(f"Amount of correct predictions: {correct_predictions}")
     st.write(f"Amount of correct predictions: {correct_predictions}")
 
     # Accuracy:
-    
+    print(f"Accuracy: {accuracy_score(actual, prediction)}")
     st.write(f"Accuracy: {accuracy_score(actual, prediction)}")
     # Ook mogelijk voor accuracy: print(f"Accuracy: {metrics.accuracy_score(y_test, y_pred)}")
 
+from sklearn.naive_bayes import GaussianNB, CategoricalNB
+
+from sklearn.neural_network import MLPClassifier
+
+if 'models_trained' not in st.session_state:
+    st.session_state['models_trained'] = False
+    
 @st.cache(allow_output_mutation=True)
 def main():
     feature_cols=[
@@ -43,10 +51,10 @@ def main():
     
     X = tictactoe_df[feature_cols] # Features
     y = tictactoe_df[['x has won']] # target variable
-  
+    
     # Split dataset into training set and test set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) # 70% training and 30% test
-    
+
     ce_oh = ce.OneHotEncoder(cols = feature_cols)
     X_train_cat_oh = ce_oh.fit_transform(X_train)
     X_test_cat_oh = ce_oh.fit_transform(X_test)
@@ -63,8 +71,7 @@ def main():
     return y_test, y_pred_baseline, y_pred_gnb, y_pred_mlp
 
 
-if 'models_trained' not in st.session_state:
-    st.session_state.models_trained = False
+
 
 # Train the models only if they haven't been trained yet
 if not st.session_state.models_trained:
