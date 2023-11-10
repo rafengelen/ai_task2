@@ -73,6 +73,11 @@ if 'models_trained' not in st.session_state:
 # Train the models only if they haven't been trained yet
 if not st.session_state.models_trained:
     y_test, y_pred_baseline, y_pred_gnb, y_pred_mlp = train_models()
+
+    df_baseline = pd.concat([y_test, pd.DataFrame({'Prediction': y_pred_baseline}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True)
+    df_gnb = pd.concat([y_test, pd.DataFrame({'Prediction': y_pred_gnb}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True)
+    df_mlp = pd.concat([y_test, pd.DataFrame({'Prediction': y_pred_mlp}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True)
+    
     st.session_state.models_trained = True  # Set the flag to True after training the models
 
 st.header('Raf Engelen - r0901812 - 3APP01', divider='gray')
@@ -84,10 +89,13 @@ option = st.sidebar.selectbox(
 st.subheader('Information about the trained model')
 if option == 'Decision Tree':
     print_confusion(y_test, pd.DataFrame(y_pred_baseline))
+    st.write(df_baseline)
 elif option == 'Gaussian Naive Bayes':
     print_confusion(y_test, pd.DataFrame(y_pred_gnb))
+    st.write(df_gnb)
 elif option == 'Multi-layer Perceptron':
     print_confusion(y_test, y_pred_mlp)
+    st.write(df_mlp)
 
 # %% [markdown]
 # ## Bronnenlijst:
