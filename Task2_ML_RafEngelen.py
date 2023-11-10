@@ -119,13 +119,13 @@ clf_baseline = clf_baseline.fit(X_train_cat_oh, y_train)
 # %%
 #dot_data = StringIO()
 #export_graphviz(clf_baseline, 
- #               out_file = dot_data, 
-  #              filled = True, 
-   #             rounded = True,
-    #            special_characters = True, 
-     #           feature_names = X_train_cat_oh.columns, 
-      #          class_names=['positief', 'negatief']
-       #         )
+#                out_file = dot_data, 
+#                filled = True, 
+#                rounded = True,
+#                special_characters = True, 
+#                feature_names = X_train_cat_oh.columns, 
+#                class_names=['positief', 'negatief']
+#                )
 #graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
 #tree_image = Image(graph.create_png(), width=2000)
 # tree_image
@@ -152,18 +152,18 @@ def print_confusion(actual, prediction):
     # Good predictions: 
     correct_predictions = confusion.diagonal().sum()
     print(f"Amount of correct predictions: {correct_predictions}")
-    st.write(f"Confusion matrix: \n{confusion}")
+    st.write(f"Amount of correct predictions: \n{correct_predictions}")
 
     # Accuracy:
     print(f"Accuracy: {accuracy_score(actual, prediction)}")
-    st.write(f"Confusion matrix: \n{confusion}")
+    st.write(f"Accuracy: \n{accuracy_score(actual, prediction)}")
     # Ook mogelijk voor accuracy: print(f"Accuracy: {metrics.accuracy_score(y_test, y_pred)}")
 
 # %% [markdown]
 # Now we can use this function with out the outcomes of the test dataset and the predictions my model has made.
 
 # %%
-print_confusion(y_test, y_pred_baseline)
+#print_confusion(y_test, y_pred_baseline)
 
 # %% [markdown]
 # ## Gaussian Naive Bayes
@@ -175,7 +175,7 @@ from sklearn.naive_bayes import GaussianNB, CategoricalNB
 
 clf_gnb= GaussianNB().fit(X_train_cat_oh, y_train)
 y_pred_gnb = clf_gnb.predict(X_test_cat_oh)
-print_confusion(y_test, y_pred_gnb)
+#print_confusion(y_test, y_pred_gnb)
 
 
 # %% [markdown]
@@ -188,7 +188,7 @@ from sklearn.neural_network import MLPClassifier
 
 clf_mlp = MLPClassifier().fit(X_train_cat_oh, y_train)
 y_pred_mlp = clf_mlp.predict(X_test_cat_oh)
-print_confusion(y_test, y_pred_mlp)
+#print_confusion(y_test, y_pred_mlp)
 
 # %% [markdown]
 # ## Compare models
