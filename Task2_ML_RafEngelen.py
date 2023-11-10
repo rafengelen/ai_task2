@@ -220,6 +220,7 @@ if option == 'Decision Tree':
     df_data = pd.concat([y_test, pd.DataFrame({'prediction': y_pred_baseline}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True)
     print_confusion(y_test, pd.DataFrame(y_pred_baseline))
     
+    
 
 elif option == 'Gaussian Naive Bayes':
     st.subheader('Gaussian Naive Bayes Model Information')
@@ -230,7 +231,9 @@ elif option == 'Multi-layer Perceptron':
     df_data = pd.concat([y_test, pd.DataFrame({'Prediction': y_pred_mlp}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True)
     print_confusion(y_test, y-y_pred_mlp)
 
+if toggle_button:
 
+    st.write(df_data)
 
 
 
