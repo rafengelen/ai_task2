@@ -195,9 +195,6 @@ import streamlit as st
 st.header('Raf Engelen - r0901812 - 3APP01', divider='gray')
 st.title("Task 2 ML: Benchmarking two ML algorithms")
 
-st.set_option('deprecation.showPyplotGlobalUse', False)
-pydotplus.graph_from_dot_data = lambda x: pydotplus.graph_from_dot_data(x.replace('fontname="DejaVu Sans",', ''))
-
 option = st.sidebar.selectbox(
     'Choose machine learning model',
     ('Decision Tree', 'Gaussian Naive Bayes', 'Multi-layer Perceptron')
@@ -205,7 +202,6 @@ option = st.sidebar.selectbox(
 if option == 'Decision Tree':
     st.subheader('Decision Tree Model Information')
     st.write(print_confusion(y_test, y_pred_baseline, use_column_width=True))
-    st.image(tree_image, caption= "Decision Tree", )
 elif option == 'Gaussian Naive Bayes':
     st.subheader('Gaussian Naive Bayes Model Information')
     st.write(print_confusion(y_test, y_pred_gnb))
