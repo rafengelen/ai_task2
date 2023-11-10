@@ -206,15 +206,30 @@ option = st.sidebar.selectbox(
     'Choose machine learning model',
     ('Decision Tree', 'Gaussian Naive Bayes', 'Multi-layer Perceptron')
 )
+toggle_button = st.sidebar.button('Toggle Data Visibility')
+df_data = st.empty()
+
+
+
+
 if option == 'Decision Tree':
     st.subheader('Decision Tree Model Information')
+    df_data = y_test.add(y_pred_baseline)
     print_confusion(y_test, y_pred_baseline)
+    
+
 elif option == 'Gaussian Naive Bayes':
     st.subheader('Gaussian Naive Bayes Model Information')
+    df_data = y_test.add(y_pred_gnb)
     print_confusion(y_test, y_pred_gnb)
 elif option == 'Multi-layer Perceptron':
     st.subheader('Multi-layer Perceptron Model Information')
-    print_confusion(y_test, y_pred_mlp)
+    df_data = y_test.add(y_pred_mlp)
+    print_confusion(y_test, y-y_pred_mlp)
+
+
+
+
 
 # %% [markdown]
 # ## Bronnenlijst:
