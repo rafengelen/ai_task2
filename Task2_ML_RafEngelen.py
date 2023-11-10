@@ -195,6 +195,9 @@ import streamlit as st
 st.header('Raf Engelen - r0901812 - 3APP01', divider='gray')
 st.title("Task 2 ML: Benchmarking two ML algorithms")
 
+st.set_option('deprecation.showPyplotGlobalUse', False)
+pydotplus.graph_from_dot_data = lambda x: pydotplus.graph_from_dot_data(x.replace('fontname="DejaVu Sans",', ''))
+
 option = st.sidebar.selectbox(
     'Choose machine learning model',
     ('Decision Tree', 'Gaussian Naive Bayes', 'Multi-layer Perceptron')
