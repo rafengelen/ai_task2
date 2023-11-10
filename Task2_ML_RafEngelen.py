@@ -87,7 +87,13 @@ X_test_cat_oh = ce_oh.fit_transform(X_test)
 print(X_train_cat_oh)
 
 # %% [markdown]
-# ## Baseline
+# ## Baseline (Decision Tree)
+# 
+# For the baseline model, I have chosen decision tree. 
+# 
+# The basic idea behind a decision tree is to recursively split the dataset into subsets based on the values of different features. Each internal node in the tree represents a decision based on a specific feature, and each leaf node represents the predicted outcome. In each internal node, it will review a specific feature and makes a decision based on that feature. 
+# 
+# The technique is popular due to it's simplicity and it's visual nature. They can however be prone to overfitting. Because the nodes in the tree works exactly for the train data set, it is most likely overfitted.
 
 # %% [markdown]
 # First we need to import some modules.
@@ -111,7 +117,18 @@ clf_baseline = clf_baseline.fit(X_train_cat_oh, y_train)
 # Here we can draw the decision tree that our model has created.
 
 # %%
-
+dot_data = StringIO()
+export_graphviz(clf_baseline, 
+                out_file = dot_data, 
+                filled = True, 
+                rounded = True,
+                special_characters = True, 
+                feature_names = X_train_cat_oh.columns, 
+                class_names=['positief', 'negatief']
+                )
+graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
+tree_image = Image(graph.create_png(), width=2000)
+# tree_image
 
 # %% [markdown]
 # Now I can use the model to predict the resultss for the test dataset.
@@ -146,6 +163,8 @@ print_confusion(y_test, y_pred_baseline)
 
 # %% [markdown]
 # ## Gaussian Naive Bayes
+# 
+# It is an extension of Naive Bayes and uses the Bayes theorem. Naive comes from the fact that the technique sees the features as completely independant. This will cause some error in the model but is overal not a big error. The independance of features makes sure that the technique is simple and powerful.
 
 # %%
 from sklearn.naive_bayes import GaussianNB, CategoricalNB
@@ -157,6 +176,8 @@ print_confusion(y_test, y_pred_gnb)
 
 # %% [markdown]
 # ## Multi-layer Perceptron (Neural network)
+# 
+# The Multilayer Perceptron is a neural network where the mapping between inputs and output is non-linear. It has multiple input layers, output layers and also some hidden layers. Each layer is composed of interconnected nodes, referred to as neurons. In the input layer, each node represents a feature of the input data. The hidden layers, placed between the input and output layers, contain nodes that transform the input data through weighted connections and activation functions. The output layer produces the final predictions or classifications based on the transformed information from the hidden layers.
 
 # %%
 from sklearn.neural_network import MLPClassifier
@@ -178,15 +199,32 @@ option = st.sidebar.selectbox(
     'Choose machine learning model',
     ('Decision Tree', 'Gaussian Naive Bayes', 'Multi-layer Perceptron')
 )
+if option == 'Decision Tree':
+    st.subheader('Decision Tree Model Information')
+    st.write(print_confusion(y_test, y_pred_baseline, use_column_width=True))
+    st.image(tree_image, caption= "Decision Tree", )
+elif option == 'Gaussian Naive Bayes':
+    st.subheader('Gaussian Naive Bayes Model Information')
+    st.write(print_confusion(y_test, y_pred_gnb))
+elif option == 'Multi-layer Perceptron':
+    st.subheader('Multi-layer Perceptron Model Information')
+    st.write(print_confusion(y_test, y_pred_mlp))
 
 # %% [markdown]
-# bronnen:
+# ## Bronnenlijst:
 # 
+# 1.9. Naive Bayes. (z.d.). scikit-learn. https://scikit-learn.org/stable/modules/naive_bayes.html
 # 
-# https://www.analyticsvidhya.com/blog/2020/03/one-hot-encoding-vs-label-encoding-using-scikit-learn/#:~:text=Label%20encoding%20is%20simpler%20and,lead%20to%20high-dimensional%20data.
+# Dash, S. (2023, 3 november). Decision Trees explained — entropy, information gain, Gini index, CCP pruning. Medium. https://towardsdatascience.com/decision-trees-explained-entropy-information-gain-gini-index-ccp-pruning-4d78070db36c 
 # 
-# https://www.statology.org/label-encoding-vs-one-hot-encoding/
+# Sethi, A. (2023, 15 juni). One Hot Encoding vs. label encoding using SciKit-Learn. Analytics Vidhya. https://www.analyticsvidhya.com/blog/2020/03/one-hot-encoding-vs-label-encoding-using-scikit-learn/#:~:text=Label%20encoding%20is%20simpler%20and,lead%20to%20high-dimensional%20data 
 # 
-# https://scikit-learn.org/stable/modules/naive_bayes.html
+# UCI Machine Learning Repository. (z.d.). https://archive.ics.uci.edu/dataset/101/tic+tac+toe+endgame
+# 
+# Zach. (2022, 8 augustus). Label encoding vs. one hot encoding: What’s the difference? Statology. https://www.statology.org/label-encoding-vs-one-hot-encoding/
+# 
+# Vats, R. (z.d.). Top 12 Commerce Project Topics & Ideas in 2023 [For Freshers]. upGrad blog. https://www.upgrad.com/blog/gaussian-naive-bayes/
+# 
+# Bento, C. (2022, 5 januari). Multilayer Perceptron explained with a Real-Life example and Python code: Sentiment analysis. Medium. https://towardsdatascience.com/multilayer-perceptron-explained-with-a-real-life-example-and-python-code-sentiment-analysis-cb408ee93141
 
 
