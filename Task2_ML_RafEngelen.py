@@ -33,7 +33,7 @@ tictactoe_df = pd.read_csv("data/tic-tac-toe.data",
                            names=feature_cols+["x has won"]
                            )
                            
-print(tictactoe_df)
+
 
 # %% [markdown]
 # ### Exploratory Data Analysis
@@ -43,7 +43,7 @@ print(tictactoe_df)
 # We can also find out how many null values there are in each column by using the isna function. We see that the data does not have any null values.
 
 # %%
-print(tictactoe_df.describe(),"\n\n",tictactoe_df.isna().sum(), sep="")
+
 
 
 # %% [markdown]
@@ -85,7 +85,7 @@ import category_encoders as ce
 ce_oh = ce.OneHotEncoder(cols = feature_cols)
 X_train_cat_oh = ce_oh.fit_transform(X_train)
 X_test_cat_oh = ce_oh.fit_transform(X_test)
-print(X_train_cat_oh)
+
 
 # %% [markdown]
 # ## Baseline (Decision Tree)
@@ -196,12 +196,7 @@ y_pred_mlp = clf_mlp.predict(X_test_cat_oh)
 # ## Compare models
 
 # %%
-print("Decision Tree:")
-print_confusion(y_test, y_pred_baseline)
-print("\nGaussian Naive Bayes")
-print_confusion(y_test, y_pred_gnb)
-print("\nMulti-layer Perceptron")
-print_confusion(y_test, y_pred_mlp)
+
 
 # %% [markdown]
 # I have tried the previous code a few times and these were the results:
@@ -241,12 +236,15 @@ option = st.sidebar.selectbox(
     'Choose machine learning model',
     ('Decision Tree', 'Gaussian Naive Bayes', 'Multi-layer Perceptron')
 )
-st.subheader('Information about the trained model')
+
 if option == 'Decision Tree':
+    st.subheader("Decision Tree")
     print_confusion(y_test, y_pred_baseline)
 elif option == 'Gaussian Naive Bayes':
+    st.subheader("Gaussian Naive Bayes")
     print_confusion(y_test, y_pred_gnb)
 elif option == 'Multi-layer Perceptron':
+    st.subheader("Multi-layer Perceptron")
     print_confusion(y_test, y_pred_mlp)
 
 # %% [markdown]
