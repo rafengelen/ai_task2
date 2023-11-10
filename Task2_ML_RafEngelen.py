@@ -91,8 +91,6 @@ toggle_button = st.sidebar.button('Toggle Data Visibility')
 
 
 
-
-
 if option == 'Decision Tree':
     st.subheader('Decision Tree Model Information')
     df_data = pd.concat([y_test, pd.DataFrame({'prediction': y_pred_baseline}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True) 
@@ -114,7 +112,7 @@ if toggle_button:
 
     if st.session_state.data_visible:
         # Display the DataFrame (replace this with your DataFrame display code)
-        st.write(st.write(df_data))
+        st.write(df_data)
 else:
     st.session_state.data_visible = False  # Set data_visible to False if button is not pressed
     
