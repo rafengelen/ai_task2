@@ -214,7 +214,7 @@ elif option == 'Gaussian Naive Bayes':
     print_confusion(y_test, y_pred_gnb)
 elif option == 'Multi-layer Perceptron':
     st.subheader('Multi-layer Perceptron Model Information')
-    print_confusion(y_test, y-y_pred_mlp)
+    print_confusion(y_test, y_pred_mlp)
 
 # %% [markdown]
 # ## Bronnenlijst:
