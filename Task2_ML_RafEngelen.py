@@ -117,17 +117,17 @@ clf_baseline = clf_baseline.fit(X_train_cat_oh, y_train)
 # Here we can draw the decision tree that our model has created.
 
 # %%
-dot_data = StringIO()
-export_graphviz(clf_baseline, 
-                out_file = dot_data, 
-                filled = True, 
-                rounded = True,
-                special_characters = True, 
-                feature_names = X_train_cat_oh.columns, 
-                class_names=['positief', 'negatief']
-                )
-graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
-tree_image = Image(graph.create_png(), width=2000)
+# dot_data = StringIO()
+# export_graphviz(clf_baseline, 
+  #              out_file = dot_data, 
+   #              filled = True, 
+     #           rounded = True,
+      #          special_characters = True, 
+       #         feature_names = X_train_cat_oh.columns, 
+        #        class_names=['positief', 'negatief']
+         #       )
+#graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
+#tree_image = Image(graph.create_png(), width=2000)
 # tree_image
 
 # %% [markdown]
