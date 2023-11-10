@@ -109,7 +109,15 @@ elif option == 'Multi-layer Perceptron':
     print_confusion(y_test, y_pred_mlp)
 
 if toggle_button:
-    st.write(df_data)
+    # Toggle the visibility state
+    st.session_state.data_visible = not st.session_state.data_visible if 'data_visible' in st.session_state else True
+
+    if st.session_state.data_visible:
+        # Display the DataFrame (replace this with your DataFrame display code)
+        st.write(st.write(df_data))
+else:
+    st.session_state.data_visible = False  # Set data_visible to False if button is not pressed
+    
 
 
 
