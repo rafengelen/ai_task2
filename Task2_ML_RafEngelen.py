@@ -93,17 +93,14 @@ toggle_button = st.sidebar.button('Toggle Data Visibility')
 
 if option == 'Decision Tree':
     st.subheader('Decision Tree Model Information')
-    df_data = pd.concat([y_test, pd.DataFrame({'prediction': y_pred_baseline}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True) 
     print_confusion(y_test, y_pred_baseline)
 
 elif option == 'Gaussian Naive Bayes':
     st.subheader('Gaussian Naive Bayes Model Information')
-    df_data = pd.concat([y_test, pd.DataFrame({'prediction': y_pred_gnb}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True) 
     print_confusion(y_test, y_pred_gnb)
 
 elif option == 'Multi-layer Perceptron':
     st.subheader('Multi-layer Perceptron Model Information')
-    df_data = pd.concat([y_test, pd.DataFrame({'prediction': y_pred_mlp}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True) 
     print_confusion(y_test, y_pred_mlp)
 
 if toggle_button:
@@ -111,7 +108,12 @@ if toggle_button:
     st.session_state.data_visible = not st.session_state.data_visible if 'data_visible' in st.session_state else True
 
     if st.session_state.data_visible:
-        # Display the DataFrame (replace this with your DataFrame display code)
+        if option == 'Decision Tree':
+            df_data = pd.concat([y_test, pd.DataFrame({'prediction': y_pred_baseline}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True)
+        elif option =="Gaussian Naive Bayes":
+            df_data = pd.concat([y_test, pd.DataFrame({'prediction': y_pred_gnb}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True) 
+        else: 
+            df_data = pd.concat([y_test, pd.DataFrame({'prediction': y_pred_mlp}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True) 
         st.write(df_data)
 else:
     st.session_state.data_visible = False  # Set data_visible to False if button is not pressed
