@@ -61,6 +61,7 @@ y = tictactoe_df[['x has won']] # target variable
 # Split dataset into training set and test set
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) # 70% training and 30% test
 
+
 # %% [markdown]
 # #### encoding
 # 
@@ -136,6 +137,7 @@ clf_baseline = clf_baseline.fit(X_train_cat_oh, y_train)
 # %%
 y_pred_baseline = clf_baseline.predict(X_test_cat_oh)
 
+
 # %% [markdown]
 # Because I want to collect information about the model. I want to show the confusion matrix and calculate the accuracy. We want this for the models we will after the baseline model as well, so we will create a function that prints the information we want to see.
 # 
@@ -190,6 +192,7 @@ clf_mlp = MLPClassifier().fit(X_train_cat_oh, y_train)
 y_pred_mlp = clf_mlp.predict(X_test_cat_oh)
 #print_confusion(y_test, y_pred_mlp)
 
+
 # %% [markdown]
 # ## Compare models
 
@@ -215,16 +218,16 @@ df_data = st.empty()
 if option == 'Decision Tree':
     st.subheader('Decision Tree Model Information')
     df_data = y_test.add(y_pred_baseline)
-    print_confusion(y_test, y_pred_baseline)
+    print_confusion(y_test, pd.DataFrame(y_pred_baseline))
     
 
 elif option == 'Gaussian Naive Bayes':
     st.subheader('Gaussian Naive Bayes Model Information')
     df_data = y_test.add(y_pred_gnb)
-    print_confusion(y_test, y_pred_gnb)
+    print_confusion(y_test, pd.DataFrame(y_pred_gnb))
 elif option == 'Multi-layer Perceptron':
     st.subheader('Multi-layer Perceptron Model Information')
-    df_data = y_test.add(y_pred_mlp)
+    df_data = y_test.add(pd.DataFrame(y_pred_mlp))
     print_confusion(y_test, y-y_pred_mlp)
 
 
