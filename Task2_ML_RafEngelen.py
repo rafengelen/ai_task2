@@ -210,7 +210,7 @@ option = st.sidebar.selectbox(
     ('Decision Tree', 'Gaussian Naive Bayes', 'Multi-layer Perceptron')
 )
 toggle_button = st.sidebar.button('Toggle Data Visibility')
-df_data = st.empty()
+
 
 
 
@@ -229,10 +229,9 @@ elif option == 'Gaussian Naive Bayes':
 elif option == 'Multi-layer Perceptron':
     st.subheader('Multi-layer Perceptron Model Information')
     df_data = pd.concat([y_test, pd.DataFrame({'Prediction': y_pred_mlp}, index=y_test.index)], axis=1).rename(columns={"x has won": "Actual"}, inplace=True)
-    print_confusion(y_test, y-y_pred_mlp)
+    print_confusion(y_test, y_pred_mlp)
 
 if toggle_button:
-
     st.write(df_data)
 
 
