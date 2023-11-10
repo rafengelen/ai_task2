@@ -71,7 +71,7 @@ clf_baseline, clf_gnb, clf_mlp, X_test_cat_oh, y_test = train_models()
 
 def make_predictions(clf_baseline, clf_gnb, clf_mlp, X_test_cat_oh):
     return clf_baseline.predict(X_test_cat_oh), clf_gnb.predict(X_test_cat_oh), clf_mlp.predict(X_test_cat_oh)
-y_pred_baseline, y_pred_gnb, y_pred_mlp = make_predictions()
+y_pred_baseline, y_pred_gnb, y_pred_mlp = make_predictions(clf_baseline, clf_gnb, clf_mlp, X_test_cat_oh)
     
 st.header('Raf Engelen - r0901812 - 3APP01', divider='gray')
 st.title("Task 2 ML: Benchmarking two ML algorithms")
